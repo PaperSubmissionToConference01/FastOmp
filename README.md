@@ -15,7 +15,7 @@ The ProPublica COMPAS dataset can be originally found here: https://github.com/p
 
 By running demo.py, you can see a demo of our experiments, applied on a real-world dataset.
 
-The demo showcases the perofmance of the tested algorithms on the real-world biomedical dataset [?]. The same code can be used to showcase performance on the synthetic dataset.
+The demo showcases the perofmance of the tested algorithms on the real-world biomedical dataset. The same code can be used to showcase performance on the synthetic dataset.
 
 Please note that some of the parameters of the algorithms are not tuned to best performance.
 
