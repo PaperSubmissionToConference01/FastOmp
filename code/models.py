@@ -6,22 +6,6 @@ import pandas as pd
 from sklearn import dummy
 from sklearn.linear_model import *
 
-def constraint(features_np, target_np, S, a, model, algo, k) : #return True
-
-    N_GROUPS = 1
-    STEP = math.floor(features_np.shape[1]/N_GROUPS)
-    #J = np.array_split(range(features_np.shape[1]), N_GROUPS)
-    #J = range(0, features_np.shape[1] , )
-    res = True
-    i = 0
-    while i < features_np.shape[1] :
-        j = min(i + STEP, features_np.shape[1] - 1)
-        if len((np.where((S >= i) & (S <= j) ))[0]) >= math.ceil((j - i) * k) :
-            res = False
-            break
-        i += STEP
-
-    return True
 
 
 def oracle(features_np, target_np, S, model, algo) :
@@ -174,3 +158,8 @@ def Linear_Regression(features, target, dims, gradient = True):
      
     # do not compute gradient of log likelihood
     else : return score
+
+
+
+# function to evaluate additional constraints
+def constraint(S) : return True
