@@ -9,8 +9,6 @@ import multiprocessing as mp
 import numpy as np
 import pandas as pd
 
-from joblib import Parallel, delayed, parallel_backend
-
 
 
 # ------------------------------------------------------------------------------------------
@@ -21,7 +19,7 @@ from joblib import Parallel, delayed, parallel_backend
 
 var_dict = {}
 
-def init_worker(features, target):
+def init_worker(features, target, threshold = 0.1):
 
     features = np.array(features)
     features_arr = mp.RawArray('d', features.shape[0]*features.shape[1])
@@ -33,11 +31,10 @@ def init_worker(features, target):
     target_np = np.frombuffer(target_arr, dtype = np.dtype(float)).reshape(target.shape)
     np.copyto(target_np, target)
 
-    var_dict['features']       = features_np
-    var_dict['features_shape'] = features.shape
-    var_dict['target']         = target_np
-    var_dict['target_shape']   = target.shape
- 
+    var_dict['features']        = features_np
+    var_dict['features_shape']  = features.shape
+    var_dict['target']          = target_np
+    var_dict['target_shape']    = target.shape
  
  
 def argmax_with_condition(arr, idx) :
@@ -68,13 +65,13 @@ def SAMPLE_SEQUENCE_parallel_oracle(i, A, S, model, N_CPU, k) :
     # get variables from shared array
     features_np = np.frombuffer(var_dict['features'], dtype = np.dtype(float)).reshape(var_dict['features_shape'])
     target_np   = np.frombuffer(var_dict['target'], dtype = np.dtype(float)).reshape(var_dict['target_shape'])
-    
+
     # define vals
     point = []
     time = 0
     while i < len(A) :
         time += 1
-        if models.constraint(features_np, target_np, np.append(S, A[0:i]), A[i], model, 'FAST_OMP', k) :
+        if models.constraint(np.append(S, A[0:i])) :
             point = np.append(point, i)
         else :
             break
@@ -135,7 +132,7 @@ def FAST_OMP_parallel_oracle(i, n_cpus, S, A, X_size, t, model, k) :
     # get variables from shared array
     features_np = np.frombuffer(var_dict['features'], dtype = np.dtype(float)).reshape(var_dict['features_shape'])
     target_np   = np.frombuffer(var_dict['target'], dtype = np.dtype(float)).reshape(var_dict['target_shape'])
-    
+
     # define time for oracle calls
     rounds_ind = 0
         
@@ -148,7 +145,8 @@ def FAST_OMP_parallel_oracle(i, n_cpus, S, A, X_size, t, model, k) :
         # evaluate feasibility and compute Xj
         for j in np.setdiff1d(range(len(out[0])), np.append(S, A[0:i])) :
             rounds_ind += 1
-            if models.constraint(features_np, target_np, np.append(S, A[0:i]), j, model, 'FAST_OMP', k) and out[0][j] >= pow(t, 0.5):
+            W = np.append(A[0:i], j)
+            if models.constraint(np.append(S, W)) and out[0][j] >= pow(t, 0.5):
                 vals = np.append(vals, j)
         Xj = [vals, out[1], i, False, rounds_ind]
         
@@ -266,16 +264,11 @@ def FAST_OMP(features, target, model, k, eps, tau, N_CPU) :
 
 
 def SDS_OMP_parallel_oracle(A, S, model, k) :
-
-    # get variables from shared array
-    features_np = np.frombuffer(var_dict['features'], dtype = np.dtype(float)).reshape(var_dict['features_shape'])
-    target_np   = np.frombuffer(var_dict['target'], dtype = np.dtype(float)).reshape(var_dict['target_shape'])
     
     # define vals
     point = []
-    constraint = []
     for a in np.setdiff1d(A, S) :
-        if models.constraint(features_np, target_np, S, a, model, 'SDS_OMP', k) :
+        if models.constraint([a]) :
             point = np.append(point, a)
 
     return point, len(np.setdiff1d(A, S))
@@ -402,14 +395,14 @@ def SDS_MA_parallel_oracle(A, S, fS, model, k) :
     # get variables from shared array
     features_np = np.frombuffer(var_dict['features'], dtype = np.dtype(float)).reshape(var_dict['features_shape'])
     target_np   = np.frombuffer(var_dict['target'], dtype = np.dtype(float)).reshape(var_dict['target_shape'])
-    
+
     # define vals
     marginal = 0
     res = [0, 0, 0]
 
     for a in A :
         out = models.oracle(features_np, target_np, np.append(S, a), model, 'SDS_MA')
-        idx = models.constraint(features_np, target_np, S, a, model, 'SDS_MA', k)
+        idx = models.constraint(np.append(S, a))
         if out - fS >= marginal and idx :
             res = [a, out, idx]
             marginal = out
