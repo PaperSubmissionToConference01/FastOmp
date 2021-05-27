@@ -15,7 +15,7 @@ The ProPublica COMPAS dataset can be originally found here: https://github.com/p
 
 By running demo.py, you can see a demo of our experiments, applied on a real-world dataset.
 
-The demo showcases the perofmance of the tested algorithms on the real-world biomedical dataset. The same code can be used to showcase performance on the synthetic dataset.
+The demo showcases the perofmance of the tested algorithms on the real-world biomedical dataset [4]. The same code can be used to showcase performance on the synthetic dataset.
 
 Please note that some of the parameters of the algorithms are not tuned to best performance.
 
@@ -55,5 +55,7 @@ The demo saves the results to text files for the tested algorithms.
 [2] Nina Grgić-Hlača, Muhammad Bilal Zafar, Krishna P. Gummadi, and Adrian Weller. Beyond Distributive Fairness in Algorithmic Decision Making: Feature Selection for Procedurally Fair Learning AAAI (2018).
 
 [3] Rishabh Iyer and Jeff A. Bilmes. Submodular Optimization with Submodular Cover and Submodular Knapsack Constraints. NIPS (2013).
+
+[4] Cancer Genome Atlas Research Network, John N Weinstein, Eric A Collisson, Gordon B379Mills, Kenna R Mills Shaw, Brad A Ozenberger, Kyle Ellrott, Ilya Shmulevich, Chris Sander, and Joshua M Stuart. The cancer genome atlas pan-cancer analysis project. Nature Genetics, 45(10):1113–20, 2013.
 
 
