@@ -2,9 +2,7 @@
 
 This repository provides a python implementation of our submission titled ''Fast and Fair Feature Selection''. This is a temporary anonymized repository.
 
-The ProPublica COMPAS dataset, and the ISK implementation for this dataset were taken from this repository: https://github.com/nina-gh/procedurally_fair_learning/tree/master/fair_feature_selection
-
-The ProPublica COMPAS dataset can be originally found here: https://github.com/propublica/compas-analysis
+The ProPublica COMPAS dataset, and the ISK implementation for this dataset were taken from this repository: https://github.com/nina-gh/procedurally_fair_learning/tree/master/fair_feature_selection . The ProPublica COMPAS dataset can be originally found here: https://github.com/propublica/compas-analysis
 
 ### Dependencies 
 
@@ -17,7 +15,7 @@ By running demo.py, you can see a demo of our experiments, applied on a real-wor
 
 The demo showcases the perofmance of the tested algorithms on the real-world biomedical dataset [4]. The same code can be used to showcase performance on the synthetic dataset.
 
-Please note that some of the parameters of the algorithms are not tuned to best performance.
+Please note that some of the parameters of the algorithms are not tuned to best performance. Furthermore, the datasets uploaded in this repository are estrapolated from the datasets used in our submission, but they are smaller in size.
 
 The demo saves the results to text files for the tested algorithms. 
 
@@ -45,7 +43,7 @@ The demo saves the results to text files for the tested algorithms.
 
 #### Data
 
-- Files 4 and 5: File 4 constains the bio-medical data for the experiments. File 5 contains the synthetic dataset for the experiments.
+- Files 4 and 5: File 4 constains the bio-medical data for the experiments [4]. File 5 contains the synthetic dataset for the experiments.
 
 
 ### References
